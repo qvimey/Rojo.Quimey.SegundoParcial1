@@ -22,6 +22,7 @@ namespace ClassLibrary1
             this.Tamaño = "Chico";
         }
 
+
         public Camion(string marca, string modelo, int año, TipoMotor motor, string tamaño) : this(marca, modelo, año, motor)
         {
             this.Tamaño = tamaño;
