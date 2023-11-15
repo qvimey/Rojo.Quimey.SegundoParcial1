@@ -57,8 +57,7 @@ namespace ClassLibrary1
 
         public void Pintar(string nuevoColor)
         {
-            Color = nuevoColor;
-            Console.WriteLine($"Pintando... Nuevo color: {Color}");
+            Console.WriteLine($"Pintando... Nuevo color: {nuevoColor}");
         }
         public override bool Equals(object? obj)
         {
