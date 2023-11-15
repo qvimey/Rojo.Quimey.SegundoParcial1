@@ -59,7 +59,7 @@ namespace ClassLibrary1
 
         public override string ToString()
         {
-            return $"Tractor: {this.Marca} {this.Modelo}, Año: {this.Año}, Motor: {this.Motor}, " +
+            return $"Tractor: {this.Marca} , {this.Modelo}, Año: {this.Año}, Motor: {this.Motor}, " +
                    $"Caballos de Fuerza: {this.Potencia}, Tamaño: {this.Tamaño}, Peso en KG: {this.PesoEnKG}";
         }
         public override bool Equals(object? obj)
