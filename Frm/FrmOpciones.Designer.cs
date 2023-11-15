@@ -125,7 +125,7 @@
             MaximizeBox = false;
             Name = "FrmOpciones";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "FrmOpciones";
+            Text = "Eleccion";
             boxVehiculos.ResumeLayout(false);
             boxVehiculos.PerformLayout();
             ResumeLayout(false);

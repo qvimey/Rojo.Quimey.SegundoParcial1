@@ -76,6 +76,7 @@ namespace Formularios
             if (this.perfilUsuario == "supervisor")
             {
                 this.btnEliminar.Visible = false;
+                MessageBox.Show("Bienvenido al perfil de Supervisor, usted no podra eliminar datos");
             }
             else if (this.perfilUsuario == "vendedor")
             {
@@ -83,8 +84,12 @@ namespace Formularios
                 this.btnModificar.Visible = false;
                 this.btnOrdenar.Visible = false;
                 this.btnAgregar.Visible = false;
+                MessageBox.Show("Bienvenido al perfil de Vendedor, usted solo podra ver los datos");
             }
-
+            else
+            {
+                MessageBox.Show("Bienvenido al perfil de Admin");
+            }
         }
         private void FrmCRUD_FormClosing(object sender, FormClosingEventArgs e)
         {

@@ -107,7 +107,7 @@
             Controls.Add(txtPotencia);
             Controls.Add(label7);
             Name = "FrmTractor";
-            Text = "FrmTractor";
+            Text = "Tractor";
             Controls.SetChildIndex(txtMarca, 0);
             Controls.SetChildIndex(txtModelo, 0);
             Controls.SetChildIndex(txtAño, 0);

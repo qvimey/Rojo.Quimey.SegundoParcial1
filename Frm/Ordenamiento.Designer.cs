@@ -144,7 +144,7 @@
             MaximizeBox = false;
             Name = "FrmOrdenamiento";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Ordenamiento";
+            Text = "Ordenar";
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
             ResumeLayout(false);

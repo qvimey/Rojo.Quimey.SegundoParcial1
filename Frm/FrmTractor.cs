@@ -60,7 +60,7 @@ namespace Formularios
                 {
                     throw new Exception("Ingrese correctamente la potencia");
                 }
-           
+
                 if (this.comboxTamaño.SelectedItem == null)
                 {
                     throw new Exception("Elegir correctamente el tamaño");
