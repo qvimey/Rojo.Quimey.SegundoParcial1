@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClassLibrary1", "ClassLibrary1\ClassLibrary1.csproj", "{9D300764-7FED-4A18-B8F6-F78CFE14E50B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Clases", "ClassLibrary1\Clases.csproj", "{9D300764-7FED-4A18-B8F6-F78CFE14E50B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Formularios", "Frm\Formularios.csproj", "{BCA5B49B-26B9-41EF-A464-57134EFE4A5D}"
 EndProject
