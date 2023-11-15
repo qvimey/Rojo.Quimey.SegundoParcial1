@@ -20,7 +20,7 @@ namespace Formularios
     public partial class FrmCRUD : Form
     {
         private frmLogin frmLogin;
-        private Garaje garaje = new Garaje();
+        private Garaje<Vehiculo> garaje = new Garaje<Vehiculo>();
         private string fecha;
         private string perfilUsuario = "";
 

@@ -9,29 +9,32 @@ using System.Threading.Tasks;
 
 namespace ClassLibrary1
 {
-    public class Garaje
+    public class Garaje<T> where T : Vehiculo
     {
-        public List<Vehiculo> vehiculos;
-   
-        public Garaje() 
+        public List<T> vehiculos;
+
+        public Garaje()
         {
-            this.vehiculos = new List<Vehiculo>();
+            this.vehiculos = new List<T>();
         }
-        public void ActualizarVehiculo(Vehiculo v, Vehiculo v2)
+
+        public void ActualizarVehiculo(T v, T v2)
         {
             int indiceVehiculoOriginal = vehiculos.FindIndex(
-            v => v.Marca == v2.Marca && v.Año == v2.Año && v.Modelo == v2.Modelo);
+                vehiculo => vehiculo.Marca == v2.Marca && vehiculo.Año == v2.Año && vehiculo.Modelo == v2.Modelo);
+
             if (indiceVehiculoOriginal > -1)
             {
                 vehiculos[indiceVehiculoOriginal] = v2;
             }
         }
-        public bool ContieneVehiculo(Vehiculo vehiculo)
+
+        public bool ContieneVehiculo(T vehiculo)
         {
             return vehiculos.Contains(vehiculo);
         }
 
-        public static Garaje operator +(Garaje garaje, Vehiculo vehiculo)
+        public static Garaje<T> operator +(Garaje<T> garaje, T vehiculo)
         {
             if (!garaje.ContieneVehiculo(vehiculo))
             {
@@ -40,7 +43,7 @@ namespace ClassLibrary1
             return garaje;
         }
 
-        public static Garaje operator -(Garaje garaje, Vehiculo vehiculo)
+        public static Garaje<T> operator -(Garaje<T> garaje, T vehiculo)
         {
             if (garaje.ContieneVehiculo(vehiculo))
             {
@@ -49,15 +52,16 @@ namespace ClassLibrary1
             return garaje;
         }
 
-        public static bool operator ==(Garaje garaje, Vehiculo vehiculo)
+        public static bool operator ==(Garaje<T> garaje, T vehiculo)
         {
             return garaje.ContieneVehiculo(vehiculo);
         }
 
-        public static bool operator !=(Garaje garaje, Vehiculo vehiculo)
+        public static bool operator !=(Garaje<T> garaje, T vehiculo)
         {
             return !garaje.ContieneVehiculo(vehiculo);
         }
+
         public void OrdenarPorAñoAscendente()
         {
             this.vehiculos = this.vehiculos.OrderBy(v => v.Año).ToList();
@@ -67,6 +71,7 @@ namespace ClassLibrary1
         {
             this.vehiculos = this.vehiculos.OrderByDescending(v => v.Año).ToList();
         }
+
         public void OrdenarPorMotorAscendente()
         {
             this.vehiculos = this.vehiculos.OrderBy(v => v.Motor).ToList();
@@ -77,6 +82,4 @@ namespace ClassLibrary1
             this.vehiculos = this.vehiculos.OrderByDescending(v => v.Motor).ToList();
         }
     }
-
-    
 }

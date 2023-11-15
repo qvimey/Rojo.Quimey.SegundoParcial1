@@ -14,15 +14,15 @@ namespace Formularios
 {
     public partial class FrmOrdenamiento : Form
     {
-        private Garaje garaje;
+        private Garaje<Vehiculo> garaje;
 
-        public Garaje Garaje
+        public Garaje<Vehiculo> Garaje
         {
             get { return garaje; }
             set { garaje = value; }
         }
 
-        public FrmOrdenamiento(Garaje garaje)
+        public FrmOrdenamiento(Garaje<Vehiculo> garaje)
         {
             InitializeComponent();
             this.garaje = garaje;
