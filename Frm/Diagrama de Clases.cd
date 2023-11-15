@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Formularios.FrmAuto">
+    <Position X="8.75" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAACAAABAAAACAAAACAAAAAAAAIAAEACAACAA=</HashCode>
+      <FileName>FrmAuto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Formularios.FrmCamion">
+    <Position X="10.75" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAACAAABAAAACAAAACAAQAAAAAQACAAEAACAA=</HashCode>
+      <FileName>FrmCamion.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Formularios.FrmCRUD">
+    <Position X="2.5" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAQIAASAAAAgCAACAICECCABACAAQABAAIAIEGAA=</HashCode>
+      <FileName>FrmCRUD.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Frm.frmLogin">
+    <Position X="0.75" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>YAAIAAAAACAAAIABAACAAAACAAAAAUAAAAAEMAAAGAA=</HashCode>
+      <FileName>frmLogin.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Formularios.FrmOpciones">
+    <Position X="6.25" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QCAAAAEAACAAAIBABACAIACSAAAAAAAAIAAAAEAACCA=</HashCode>
+      <FileName>FrmOpciones.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Formularios.FrmTractor">
+    <Position X="12.75" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAACAAABAAAACAQICCAAQAgAAAAAAAAAAACAA=</HashCode>
+      <FileName>FrmTractor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Formularios.FrmVehiculo">
+    <Position X="13" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAQAAAAASAQADAABADAAAACAAAgAQAAAIAAAAAJAAA=</HashCode>
+      <FileName>FrmVehiculo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Formularios.FrmOrdenamiento">
+    <Position X="4.25" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAEAAACAAABgABIKAAAACAAAAAAAAACAAAAACAAA=</HashCode>
+      <FileName>Ordenamiento.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ClassLibrary1.Auto">
+    <Position X="4" Y="4.25" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="ClassLibrary1.Camion">
+    <Position X="7" Y="4.25" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="ClassLibrary1.Garaje">
+    <Position X="2.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="ClassLibrary1.Tractor">
+    <Position X="9.75" Y="4.25" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="ClassLibrary1.Usuario">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="ClassLibrary1.Vehiculo">
+    <Position X="7" Y="0.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
