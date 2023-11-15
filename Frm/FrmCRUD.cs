@@ -22,7 +22,7 @@ namespace Formularios
         private frmLogin frmLogin;
         private Garaje garaje = new Garaje();
         private string fecha;
-        string perfilUsuario = "";
+        private string perfilUsuario = "";
 
 
         public FrmCRUD(frmLogin frmLogin, string _nombreUsuario, string perfilUsuario)
@@ -77,12 +77,12 @@ namespace Formularios
             {
                 this.btnEliminar.Visible = false;
             }
-            if (this.perfilUsuario == "vendedor")
+            else if (this.perfilUsuario == "vendedor")
             {
-                this.btnEliminar.Visible=false;
-                this.btnModificar.Visible=false;
-                this.btnOrdenar.Visible=false;
-                this.btnAgregar.Visible=false;
+                this.btnEliminar.Visible = false;
+                this.btnModificar.Visible = false;
+                this.btnOrdenar.Visible = false;
+                this.btnAgregar.Visible = false;
             }
 
         }
