@@ -57,15 +57,15 @@ namespace Formularios
             {
                 if (frmOpciones.eleccion == "auto")
                 {
-                    this.garaje += frmOpciones.auto;
+                    garaje = garaje + frmOpciones.auto;
                 }
                 else if (frmOpciones.eleccion == "tractor")
                 {
-                    this.garaje += frmOpciones.tractor;
+                    garaje = garaje + frmOpciones.tractor;
                 }
                 else if (frmOpciones.eleccion == "camion")
                 {
-                    this.garaje += frmOpciones.camion;
+                    garaje = garaje + frmOpciones.camion;
                 }
             }
             ActualizarVisor();
@@ -163,7 +163,7 @@ namespace Formularios
                 if (resultado == DialogResult.Yes)
                 {
                     int index = this.ltsbox.SelectedIndex;
-                    garaje.vehiculos.RemoveAt(index);
+                    garaje = garaje - garaje.vehiculos[index];
                     ActualizarVisor();
                 }
             }
