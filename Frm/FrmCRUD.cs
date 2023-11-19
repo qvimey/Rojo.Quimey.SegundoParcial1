@@ -115,6 +115,7 @@ namespace Formularios
                 int index = this.ltsbox.SelectedIndex;
                 Vehiculo vehiculo = garaje.vehiculos[index];
 
+
                 if (vehiculo is Auto)
                 {
                     FrmAuto frmAuto = new FrmAuto((Auto)vehiculo);

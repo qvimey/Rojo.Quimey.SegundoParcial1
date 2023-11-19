@@ -1,4 +1,5 @@
-﻿using ClassLibrary1;
+﻿using Clases;
+using ClassLibrary1;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -60,6 +61,8 @@ namespace Formularios
                 string tamaño = this.comboxTamaño.Text;
                 camion = new Camion(marca, modelo, año, motor, tamaño, capacidadCarga);
                 DialogResult = DialogResult.OK;
+                AccesoDatos accesoDatos = new AccesoDatos();
+                accesoDatos.InsertarDatos(camion);
             }
             catch (Exception ex)
             {

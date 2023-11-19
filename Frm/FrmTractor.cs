@@ -1,4 +1,5 @@
-﻿using ClassLibrary1;
+﻿using Clases;
+using ClassLibrary1;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -69,6 +70,7 @@ namespace Formularios
                 string tamaño = this.comboxTamaño.Text;
                 tractor = new Tractor(marca, modelo, año, motor, tamaño, potencia, pesoEnKG);
                 DialogResult = DialogResult.OK;
+                
             }
             catch (Exception ex)
             {

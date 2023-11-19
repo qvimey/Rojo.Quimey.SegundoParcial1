@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 using System.Xml;
+using System.Data.SqlClient;
 
 namespace ClassLibrary1
 {
@@ -93,5 +94,13 @@ namespace ClassLibrary1
         }
 
         protected abstract void IniciandoMotor();
+
+        public virtual void ConfigurarComando(SqlCommand comando)
+        {
+            comando.Parameters.AddWithValue("@marca", this.Marca);
+            comando.Parameters.AddWithValue("@modelo", this.Modelo);
+            comando.Parameters.AddWithValue("@año", this.Año);
+            comando.Parameters.AddWithValue("@motor", this.Motor);
+        }
     }
 }

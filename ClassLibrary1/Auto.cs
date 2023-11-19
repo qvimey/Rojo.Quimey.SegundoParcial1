@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -69,6 +70,13 @@ namespace ClassLibrary1
                        Color == otroAuto.Color;
             }
             return false;
+        }
+        public override void ConfigurarComando(SqlCommand comando)
+        {
+            base.ConfigurarComando(comando); 
+
+            comando.Parameters.AddWithValue("@velocidadMax", this.VelocidadPunta);
+            comando.Parameters.AddWithValue("@color", this.Color);
         }
     }
 }

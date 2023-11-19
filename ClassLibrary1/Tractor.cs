@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -73,6 +74,14 @@ namespace ClassLibrary1
                        PesoEnKG == otroTractor.PesoEnKG;
             }
             return false;
+        }
+        public override void ConfigurarComando(SqlCommand comando)
+        {
+            base.ConfigurarComando(comando);  
+
+            comando.Parameters.AddWithValue("@tamaño", this.Tamaño);
+            comando.Parameters.AddWithValue("@potencia", this.Potencia);
+            comando.Parameters.AddWithValue("@pesoEnKG", this.PesoEnKG);
         }
     }
 }

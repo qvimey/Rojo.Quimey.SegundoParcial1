@@ -1,4 +1,5 @@
-﻿using ClassLibrary1;
+﻿using Clases;
+using ClassLibrary1;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -63,6 +64,8 @@ namespace Formularios
                 {
                     auto = new Auto(marca, modelo, año, motor, velocidadMax, color);
                     DialogResult = DialogResult.OK;
+                    AccesoDatos accesoDatos = new AccesoDatos();
+                    accesoDatos.InsertarDatos(auto);
                 }
             }
             catch (Exception ex)
