@@ -34,6 +34,11 @@ namespace ClassLibrary1
             this.CapacidadDeCarga = capacidadDeCarga;
         }
 
+        public Camion(string marca, string modelo, int año, TipoMotor motor, string tamaño, int capacidadDeCarga, int id) : this(marca, modelo, año, motor, tamaño, capacidadDeCarga)
+        {
+            this.Id = id;
+        }
+
         public void Arrancar_Vehiculo()
         {
             Console.WriteLine("Camion");

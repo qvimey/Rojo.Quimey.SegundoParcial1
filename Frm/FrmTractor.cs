@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -16,7 +17,7 @@ namespace Formularios
     public partial class FrmTractor : FrmVehiculo
     {
 
-        private Tractor tractor = new Tractor();
+        private Tractor tractor;
 
         public Tractor Tractor
         {
@@ -27,7 +28,7 @@ namespace Formularios
         {
             InitializeComponent();
         }
-        public FrmTractor(Tractor tractor) : this()
+        public FrmTractor(Tractor tractor,int index) : this()
         {
             this.txtMarca.Text = tractor.Marca;
             this.txtModelo.Text = tractor.Modelo;
@@ -36,6 +37,7 @@ namespace Formularios
             this.txtPotencia.Text = tractor.Potencia.ToString();
             this.cmboxMotor.Text = tractor.Motor.ToString();
             this.comboxTamaño.Text = tractor.Tamaño.ToString();
+            this.Id = index;
         }
 
         private void BtnAceptar_Click(object sender, EventArgs e)
@@ -66,13 +68,19 @@ namespace Formularios
                 {
                     throw new Exception("Elegir correctamente el tamaño");
                 }
-
-                string tamaño = this.comboxTamaño.Text;
-                tractor = new Tractor(marca, modelo, año, motor, tamaño, potencia, pesoEnKG);
-                DialogResult = DialogResult.OK;
-                AccesoDatos accesoDatos = new AccesoDatos();
-                accesoDatos.InsertarDatos(tractor);
-
+                else
+                {
+                    try
+                    {
+                        string tamaño = this.comboxTamaño.Text;
+                        tractor = new Tractor(marca, modelo, año, motor, tamaño, potencia, pesoEnKG,this.Id);
+                        DialogResult = DialogResult.OK;
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error al modificar/insertar datos: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
             }
             catch (Exception ex)
             {

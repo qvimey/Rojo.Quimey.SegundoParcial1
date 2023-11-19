@@ -36,6 +36,11 @@ namespace ClassLibrary1
             this.Color = color;
         }
 
+        public Auto(string marca, string modelo, int año, TipoMotor motor, int velocidadPunta, string color, int id) : this(marca, modelo, año, motor, velocidadPunta,color)
+        {
+            this.Id = id;
+        }
+
         public override void ArrancarVehiculo()
         {
             Console.WriteLine("Arrancando Auto");

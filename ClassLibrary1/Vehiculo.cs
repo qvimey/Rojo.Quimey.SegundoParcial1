@@ -31,6 +31,7 @@ namespace ClassLibrary1
             this.Año = 0;
             this.Motor = TipoMotor.Gas;
             this.Marca = marca;
+            this.Id = 0;
         }
 
         public Vehiculo(string marca, string modelo) : this(marca)
@@ -47,6 +48,11 @@ namespace ClassLibrary1
         {
             this.Motor = motor;
         }
+        public Vehiculo(string marca, string modelo, int año, TipoMotor motor, int id) : this(marca, modelo, año, motor)
+        {
+            this.Id = id;
+        }
+
 
         public static bool operator ==(Vehiculo a, Vehiculo b)
         {

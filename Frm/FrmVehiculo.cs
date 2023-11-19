@@ -17,6 +17,7 @@ namespace Formularios
         protected string modelo;
         protected int año;
         protected TipoMotor motor;
+        protected int Id;
         public FrmVehiculo()
         {
             InitializeComponent();
@@ -44,7 +45,7 @@ namespace Formularios
                 marca = this.txtMarca.Text;
                 modelo = this.txtModelo.Text;
                 motor = (TipoMotor)this.cmboxMotor.SelectedIndex;
-
+                Id = this.Id;
                 return true;
             }
             catch (Exception ex)

@@ -36,7 +36,7 @@ namespace Formularios
                     if (formAuto.DialogResult == DialogResult.OK)
                     {
                         auto = formAuto.Auto;
-                        eleccion = "auto";
+                        eleccion = "Autos";
                         this.DialogResult = DialogResult.OK;
                     }
                 }
@@ -47,7 +47,7 @@ namespace Formularios
                     if (formTractor.DialogResult == DialogResult.OK)
                     {
                         tractor = formTractor.Tractor;
-                        eleccion = "tractor";
+                        eleccion = "Tractores";
                         this.DialogResult = DialogResult.OK;
                     }
                 }
@@ -58,7 +58,7 @@ namespace Formularios
                     if (formCamion.DialogResult == DialogResult.OK)
                     {
                         camion = formCamion.Camion;
-                        eleccion = "camion";
+                        eleccion = "Camiones";
                         this.DialogResult = DialogResult.OK;
                     }
                 }

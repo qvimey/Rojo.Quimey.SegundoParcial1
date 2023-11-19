@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -14,26 +15,29 @@ namespace Formularios
 {
     public partial class FrmCamion : FrmVehiculo
     {
-        private Camion camion = new Camion();
+        private Camion camion;
 
         public Camion Camion
         {
             get { return camion; }
             set { camion = value; }
         }
+
         public FrmCamion()
         {
             InitializeComponent();
         }
 
-        public FrmCamion(Camion camion) : this()
+        public FrmCamion(Camion camion, int index) : this()
         {
             this.txtMarca.Text = camion.Marca;
             this.txtModelo.Text = camion.Modelo;
             this.txtAño.Text = camion.Año.ToString();
             this.txtCapacidadCarga.Text = camion.CapacidadDeCarga.ToString();
             this.comboxTamaño.Text = camion.Tamaño.ToString();
+            this.Id = index;
         }
+
         private void BtnAceptar_Click(object sender, EventArgs e)
         {
             try
@@ -55,14 +59,22 @@ namespace Formularios
 
                 if (this.comboxTamaño.SelectedItem == null)
                 {
-                    throw new Exception("Elegir correctamente el tamaño");
+                    throw new Exception("Elija correctamente el tamaño");
                 }
+                else
+                {
+                    try
+                    {
+                        string tamaño = this.comboxTamaño.Text;
+                        camion = new Camion(marca, modelo, año, motor, tamaño, capacidadCarga,this.Id);
+                        DialogResult = DialogResult.OK;
 
-                string tamaño = this.comboxTamaño.Text;
-                camion = new Camion(marca, modelo, año, motor, tamaño, capacidadCarga);
-                DialogResult = DialogResult.OK;
-                AccesoDatos accesoDatos = new AccesoDatos();
-                accesoDatos.InsertarDatos(camion);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error al modificar/insertar datos: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
             }
             catch (Exception ex)
             {

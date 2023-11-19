@@ -1,6 +1,7 @@
 ﻿using Clases;
 using ClassLibrary1;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -27,13 +28,14 @@ namespace Formularios
         {
             InitializeComponent();
         }
-        public FrmAuto(Auto auto) : this()
+        public FrmAuto(Auto auto,int index) : this()
         {
             this.txtMarca.Text = auto.Marca;
             this.txtModelo.Text = auto.Modelo;
             this.txtAño.Text = auto.Año.ToString();
             this.txtColor.Text = auto.Color;
             this.txtVelocidadPunta.Text = auto.VelocidadPunta.ToString();
+            this.Id = index;
         }
 
         private void BtnAceptar_Click(object sender, EventArgs e)
@@ -63,22 +65,16 @@ namespace Formularios
                 }
                 else
                 {
-
-                    auto = new Auto(marca, modelo, año, motor, velocidadMax, color);
-
-                    DialogResult = DialogResult.OK;
-                    AccesoDatos accesoDatos = new AccesoDatos();
-                    if (accesoDatos.ExisteVehiculoEnBaseDeDatos(auto.Id))
+                    try
                     {
-                        accesoDatos.ModificarDatos(auto);
-                    }
-                    else
-                    {
-                        auto = new Auto(marca, modelo, año, motor, velocidadMax, color);
+                        auto = new Auto(marca, modelo, año, motor, velocidadMax, color, this.Id);
                         DialogResult = DialogResult.OK;
-                        accesoDatos.InsertarDatos(auto);
+                        
                     }
-
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error al modificar/insertar datos: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
             }
             catch (Exception ex)

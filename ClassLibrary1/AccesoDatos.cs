@@ -23,7 +23,6 @@ namespace Clases
         public AccesoDatos()
         {
             this.conexion = new SqlConnection(AccesoDatos.cadena_conexion);
-
         }
         public bool PruebaConexion()
         {
@@ -66,7 +65,7 @@ namespace Clases
                 }
                 if (Tabla == "Tractores")
                 {
-                    this.comando.CommandText = "SELECT Id, Marca, Modelo, Año, Motor, Tamaño, Potencia, PesoEnKG FROM Tractores";
+                    this.comando.CommandText = "SELECT Id, Marca, Modelo, Año, Motor, Tamaño, Potencia, PesoEnKG FROM Tractores ";
                 }
                 this.comando.Connection = this.conexion;
 
@@ -87,14 +86,14 @@ namespace Clases
                         int velocidadPunta = (int)lector["VelocidadPunta"];
                         string color = lector["Color"].ToString();
 
-                        lista.Add(new Auto(marca, modelo, año, motor, velocidadPunta, color));
+                        lista.Add(new Auto(marca, modelo, año, motor, velocidadPunta, color,id));
                     }
                     if (Tabla == "Camiones")
                     {
                         string tamaño = lector["Tamaño"].ToString();
                         int capacidadCarga = (int)lector["CapacidadDeCarga"];
 
-                        lista.Add(new Camion(marca, modelo, año, motor, tamaño, capacidadCarga));
+                        lista.Add(new Camion(marca, modelo, año, motor, tamaño, capacidadCarga,id));
                     }
                     if (Tabla == "Tractores")
                     {
@@ -102,7 +101,7 @@ namespace Clases
                         int potencia = (int)lector["Potencia"];
                         int pesoEnKG = (int)lector["PesoEnKG"];
 
-                        lista.Add(new Tractor(marca, modelo, año, motor, tamaño, potencia, pesoEnKG));
+                        lista.Add(new Tractor(marca, modelo, año, motor, tamaño, potencia, pesoEnKG,id));
                     }
                 }
             }
@@ -177,22 +176,32 @@ namespace Clases
 
             return retorno;
         }
-        public bool ExisteVehiculoEnBaseDeDatos(int id)
+        public bool ExisteVehiculoEnBaseDeDatos(int id, string Tabla)
         {
-            using (SqlConnection conexion = new SqlConnection("Data Source = localhost\\SQLEXPRESS; Initial Catalog = dbSistema; Integrated Security = True"))
-            {
-                SqlCommand comando = new SqlCommand();
-                comando.CommandType = System.Data.CommandType.Text;
-                comando.CommandText = "SELECT COUNT(*) FROM Autos WHERE Id = @id";
-                comando.Parameters.AddWithValue("@id", id);
+            SqlConnection conexion = this.conexion;
+            SqlCommand comando = new SqlCommand();
 
+            try
+            {
+                comando.CommandType = CommandType.Text;
+                comando.CommandText = $"SELECT Id FROM {Tabla} WHERE Id = @id";
+                comando.Parameters.Add("@id", (SqlDbType)id);
                 comando.Connection = conexion;
 
                 conexion.Open();
-
                 int cantidad = (int)comando.ExecuteScalar();
-
                 return cantidad > 0;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            finally
+            {
+                if (conexion.State == ConnectionState.Open)
+                {
+                    conexion.Close();
+                }
             }
         }
         public bool ModificarDatos(Vehiculo vehiculo)
@@ -202,22 +211,29 @@ namespace Clases
             try
             {
                 this.comando = new SqlCommand();
-                vehiculo.ConfigurarComando(this.comando);
-                this.comando.Parameters.AddWithValue("@id", vehiculo.Id);
-                this.comando.CommandType = System.Data.CommandType.Text;
 
                 if (vehiculo is Auto)
                 {
-                    this.comando.CommandText = "UPDATE Autos SET Marca = @marca, Modelo = @modelo, Año = @año, Motor = @motor, VelocidadPunta = @velocidadMax, Color = @color WHERE Id = @id";
+                    vehiculo.ConfigurarComando(this.comando);
+                    this.comando.CommandType = System.Data.CommandType.Text;
+                    this.comando.CommandText = "UPDATE Autos SET Marca = @marca, Modelo = @modelo, Año = @año, Motor = @motor, VelocidadPunta = @velocidadMax, Color = @color " +
+                                               "WHERE Id = @id";
                 }
                 else if (vehiculo is Camion)
                 {
-                    this.comando.CommandText = "UPDATE Camiones SET Marca = @marca, Modelo = @modelo, Año = @año, Motor = @motor, Tamaño = @tamaño, CapacidadDeCarga = @capacidadCarga WHERE Id = @id";
+                    vehiculo.ConfigurarComando(this.comando);
+                    this.comando.CommandType = System.Data.CommandType.Text;
+                    this.comando.CommandText = "UPDATE Camiones SET Marca = @marca, Modelo = @modelo, Año = @año, Motor = @motor, Tamaño = @tamaño, CapacidadDeCarga = @capacidadCarga " +
+                                               "WHERE Id = @id";
                 }
                 else if (vehiculo is Tractor)
                 {
-                    this.comando.CommandText = "UPDATE Tractores SET Marca = @marca, Modelo = @modelo, Año = @año, Motor = @motor, Tamaño = @tamaño, Potencia = @potencia, PesoEnKG = @pesoEnKG WHERE Id = @id";
+                    vehiculo.ConfigurarComando(this.comando);
+                    this.comando.CommandType = System.Data.CommandType.Text;
+                    this.comando.CommandText = "UPDATE Tractores SET Marca = @marca, Modelo = @modelo, Año = @año, Motor = @motor, Tamaño = @tamaño, Potencia = @potencia, PesoEnKG = @pesoEnKG " +
+                                               "WHERE Id = @id";
                 }
+
 
                 this.comando.Connection = this.conexion;
 
@@ -232,7 +248,7 @@ namespace Clases
             }
             catch (Exception ex)
             {
-               
+
             }
             finally
             {

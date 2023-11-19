@@ -38,6 +38,11 @@ namespace ClassLibrary1
             this.PesoEnKG = pesoEnKG;
         }
 
+        public Tractor(string marca, string modelo, int año, TipoMotor motor, string tamaño, int potencia, int pesoEnKG, int id) : this(marca, modelo, año, motor, tamaño, potencia, pesoEnKG)
+        {
+            this.Id = id;
+        }
+
         protected override void IniciandoMotor()
         {
             Console.WriteLine("Iniciando Motor Tractor");
