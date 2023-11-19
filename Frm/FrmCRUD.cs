@@ -111,7 +111,6 @@ namespace Formularios
             {
                 this.frmLogin.Close();
             }
-
         }
 
         private void BtnModificar_Click(object sender, EventArgs e)
@@ -191,28 +190,58 @@ namespace Formularios
 
                     if (resultado == DialogResult.Yes)
                     {
-                        int index = this.ltsbox.SelectedIndex;
-
-                        if (index >= 0 && index < garaje.vehiculos.Count)
+                        AccesoDatos acceso = new AccesoDatos();
+                        Vehiculo vehiculoSeleccionado = (Vehiculo)this.ltsbox.SelectedItem;
+                        if (vehiculoSeleccionado is Auto)
                         {
-                            Vehiculo vehiculoAEliminar = garaje.vehiculos[index];
-                            bool eliminado = accesoDatos.EliminarDatos(vehiculoAEliminar.Id, vehiculoAEliminar.Tabla);
-
-                            if (eliminado)
+                            List<Vehiculo> listaVehiculos = acceso.ObtenerListaDatos("Autos");
+                            int index = listaVehiculos.FindIndex(v => v.Id == vehiculoSeleccionado.Id);
+                            if (index != -1)
                             {
-                                garaje.vehiculos.RemoveAt(index);
+                                listaVehiculos[index] = vehiculoSeleccionado;
+            
+                                bool eliminado = accesoDatos.EliminarDatos(vehiculoSeleccionado.Id, "Autos");
                                 ActualizarVisor();
-                                ActualizarListaVehiculos(vehiculoAEliminar.Tabla);
-                                MessageBox.Show("Vehículo eliminado correctamente", "Eliminación exitosa", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            }
-                            else
-                            {
-                                MessageBox.Show("Error al eliminar el vehículo", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                ActualizarListaVehiculos("Autos");
+                                if (eliminado)
+                                {
+                                    MessageBox.Show("Vehiculo Eliminado");
+                                }    
                             }
                         }
-                        else
+                        if (vehiculoSeleccionado is Camion)
                         {
-                            MessageBox.Show("Índice de vehículo seleccionado fuera de rango", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            List<Vehiculo> listaVehiculos = acceso.ObtenerListaDatos("Camiones");
+                            int index = listaVehiculos.FindIndex(v => v.Id == vehiculoSeleccionado.Id);
+                            if (index != -1)
+                            {
+                                listaVehiculos[index] = vehiculoSeleccionado;
+
+                                bool eliminado = accesoDatos.EliminarDatos(vehiculoSeleccionado.Id, "Camiones");
+                                ActualizarVisor();
+                                ActualizarListaVehiculos("Camiones");
+                                if (eliminado)
+                                {
+                                    MessageBox.Show("Camión Eliminado");
+                                }
+                            }
+                        }
+                        if (vehiculoSeleccionado is Tractor)
+                        {
+                            List<Vehiculo> listaVehiculos = acceso.ObtenerListaDatos("Tractores");
+                            int index = listaVehiculos.FindIndex(v => v.Id == vehiculoSeleccionado.Id);
+                            if (index != -1)
+                            {
+                                listaVehiculos[index] = vehiculoSeleccionado;
+
+                                bool eliminado = accesoDatos.EliminarDatos(vehiculoSeleccionado.Id, "Tractores");
+                                ActualizarVisor();
+                                ActualizarListaVehiculos("Tractores");
+                                if (eliminado)
+                                {
+                                    MessageBox.Show("Tractor Eliminado");
+                                }
+                            }
                         }
                     }
                 }
