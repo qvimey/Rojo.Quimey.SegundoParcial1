@@ -70,7 +70,9 @@ namespace Formularios
                 string tamaño = this.comboxTamaño.Text;
                 tractor = new Tractor(marca, modelo, año, motor, tamaño, potencia, pesoEnKG);
                 DialogResult = DialogResult.OK;
-                
+                AccesoDatos accesoDatos = new AccesoDatos();
+                accesoDatos.InsertarDatos(tractor);
+
             }
             catch (Exception ex)
             {

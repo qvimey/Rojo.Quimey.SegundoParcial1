@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
@@ -62,10 +63,22 @@ namespace Formularios
                 }
                 else
                 {
+
                     auto = new Auto(marca, modelo, año, motor, velocidadMax, color);
+
                     DialogResult = DialogResult.OK;
                     AccesoDatos accesoDatos = new AccesoDatos();
-                    accesoDatos.InsertarDatos(auto);
+                    if (accesoDatos.ExisteVehiculoEnBaseDeDatos(auto.Id))
+                    {
+                        accesoDatos.ModificarDatos(auto);
+                    }
+                    else
+                    {
+                        auto = new Auto(marca, modelo, año, motor, velocidadMax, color);
+                        DialogResult = DialogResult.OK;
+                        accesoDatos.InsertarDatos(auto);
+                    }
+
                 }
             }
             catch (Exception ex)

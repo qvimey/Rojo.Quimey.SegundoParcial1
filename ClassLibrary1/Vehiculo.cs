@@ -17,6 +17,8 @@ namespace ClassLibrary1
         public string Modelo { get; set; }
         public int Año { get; set; }
         public TipoMotor Motor { get; set; }
+        public int Id { get; set; }
+        public abstract string Tabla { get; }
 
         public Vehiculo()
         {
@@ -67,7 +69,7 @@ namespace ClassLibrary1
 
         public override string ToString()
         {
-            return $"Vehículo: {this.Marca} {this.Modelo}, Año: {this.Año}, Motor: {this.Motor}";
+            return $"id: {this.Id} Vehículo: {this.Marca} {this.Modelo}, Año: {this.Año}, Motor: {this.Motor}";
         }
 
         public override bool Equals(object? obj)
@@ -97,10 +99,11 @@ namespace ClassLibrary1
 
         public virtual void ConfigurarComando(SqlCommand comando)
         {
+            comando.Parameters.AddWithValue("@id", this.Id);
             comando.Parameters.AddWithValue("@marca", this.Marca);
             comando.Parameters.AddWithValue("@modelo", this.Modelo);
             comando.Parameters.AddWithValue("@año", this.Año);
-            comando.Parameters.AddWithValue("@motor", this.Motor);
+            comando.Parameters.AddWithValue("@motor", this.Motor.ToString());
         }
     }
 }

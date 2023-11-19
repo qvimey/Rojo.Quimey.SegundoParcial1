@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
 using ClassLibrary1;
+using System.Data;
 
 namespace Clases
 {
@@ -47,32 +48,65 @@ namespace Clases
             return retorno;
         }
 
-        /*public List<Vehiculo> ObtenerListaDatos()
+        public List<Vehiculo> ObtenerListaDatos(string Tabla)
         {
             List<Vehiculo> lista = new List<Vehiculo>();
+
             try
             {
                 this.comando = new SqlCommand();
                 this.comando.CommandType = System.Data.CommandType.Text;
-                this.comando.CommandText = "select id,cadena,entero,flotante from dato";
+                if (Tabla == "Autos")
+                {
+                    this.comando.CommandText = $"SELECT Id, Marca, Modelo, Año, Motor, VelocidadPunta, Color FROM Autos ";
+                }
+                if (Tabla == "Camiones")
+                {
+                    this.comando.CommandText = "SELECT Id, Marca, Modelo, Año, Motor, Tamaño, CapacidadDeCarga FROM Camiones ";
+                }
+                if (Tabla == "Tractores")
+                {
+                    this.comando.CommandText = "SELECT Id, Marca, Modelo, Año, Motor, Tamaño, Potencia, PesoEnKG FROM Tractores";
+                }
                 this.comando.Connection = this.conexion;
 
                 this.conexion.Open();
 
                 this.lector = this.comando.ExecuteReader();
+
                 while (lector.Read())
                 {
-                    Vehiculo dato = new Dato();
-                    dato.id = (int)this.lector["id"];
-                    dato.cadena = this.lector["cadena"].ToString();
-                    dato.entero = (int)this.lector["entero"];
-                    dato.flotante = (float)this.lector.GetDouble(3);
-                    lista.Add(dato);
-                }
+                    int id = (int)lector["Id"];
+                    string marca = lector["Marca"].ToString();
+                    string modelo = lector["Modelo"].ToString();
+                    int año = (int)lector["Año"];
+                    TipoMotor motor = (TipoMotor)Enum.Parse(typeof(TipoMotor), lector["Motor"].ToString());
 
-                this.lector.Close();
+                    if (Tabla == "Autos")
+                    {
+                        int velocidadPunta = (int)lector["VelocidadPunta"];
+                        string color = lector["Color"].ToString();
+
+                        lista.Add(new Auto(marca, modelo, año, motor, velocidadPunta, color));
+                    }
+                    if (Tabla == "Camiones")
+                    {
+                        string tamaño = lector["Tamaño"].ToString();
+                        int capacidadCarga = (int)lector["CapacidadDeCarga"];
+
+                        lista.Add(new Camion(marca, modelo, año, motor, tamaño, capacidadCarga));
+                    }
+                    if (Tabla == "Tractores")
+                    {
+                        string tamaño = lector["Tamaño"].ToString();
+                        int potencia = (int)lector["Potencia"];
+                        int pesoEnKG = (int)lector["PesoEnKG"];
+
+                        lista.Add(new Tractor(marca, modelo, año, motor, tamaño, potencia, pesoEnKG));
+                    }
+                }
             }
-            catch
+            catch (Exception ex)
             {
 
             }
@@ -83,8 +117,9 @@ namespace Clases
                     this.conexion.Close();
                 }
             }
+
             return lista;
-        }*/
+        }
 
         public bool InsertarDatos(Vehiculo vehiculo)
         {
@@ -105,7 +140,7 @@ namespace Clases
                 {
                     vehiculo.ConfigurarComando(this.comando);
                     this.comando.CommandType = System.Data.CommandType.Text;
-                    this.comando.CommandText = "INSERT INTO Camiones(Marca, Modelo, Año, Motor, Tamaño, CapacidadCarga) " +
+                    this.comando.CommandText = "INSERT INTO Camiones(Marca, Modelo, Año, Motor, Tamaño, CapacidadDeCarga) " +
                                                "VALUES (@marca, @modelo, @año, @motor, @tamaño, @capacidadCarga)";
                 }
                 else if (vehiculo is Tractor)
@@ -130,7 +165,110 @@ namespace Clases
             }
             catch (Exception ex)
             {
-                // Manejar la excepción según tus necesidades.
+
+            }
+            finally
+            {
+                if (this.conexion.State == System.Data.ConnectionState.Open)
+                {
+                    this.conexion.Close();
+                }
+            }
+
+            return retorno;
+        }
+        public bool ExisteVehiculoEnBaseDeDatos(int id)
+        {
+            using (SqlConnection conexion = new SqlConnection("Data Source = localhost\\SQLEXPRESS; Initial Catalog = dbSistema; Integrated Security = True"))
+            {
+                SqlCommand comando = new SqlCommand();
+                comando.CommandType = System.Data.CommandType.Text;
+                comando.CommandText = "SELECT COUNT(*) FROM Autos WHERE Id = @id";
+                comando.Parameters.AddWithValue("@id", id);
+
+                comando.Connection = conexion;
+
+                conexion.Open();
+
+                int cantidad = (int)comando.ExecuteScalar();
+
+                return cantidad > 0;
+            }
+        }
+        public bool ModificarDatos(Vehiculo vehiculo)
+        {
+            bool retorno = false;
+
+            try
+            {
+                this.comando = new SqlCommand();
+                vehiculo.ConfigurarComando(this.comando);
+                this.comando.Parameters.AddWithValue("@id", vehiculo.Id);
+                this.comando.CommandType = System.Data.CommandType.Text;
+
+                if (vehiculo is Auto)
+                {
+                    this.comando.CommandText = "UPDATE Autos SET Marca = @marca, Modelo = @modelo, Año = @año, Motor = @motor, VelocidadPunta = @velocidadMax, Color = @color WHERE Id = @id";
+                }
+                else if (vehiculo is Camion)
+                {
+                    this.comando.CommandText = "UPDATE Camiones SET Marca = @marca, Modelo = @modelo, Año = @año, Motor = @motor, Tamaño = @tamaño, CapacidadDeCarga = @capacidadCarga WHERE Id = @id";
+                }
+                else if (vehiculo is Tractor)
+                {
+                    this.comando.CommandText = "UPDATE Tractores SET Marca = @marca, Modelo = @modelo, Año = @año, Motor = @motor, Tamaño = @tamaño, Potencia = @potencia, PesoEnKG = @pesoEnKG WHERE Id = @id";
+                }
+
+                this.comando.Connection = this.conexion;
+
+                this.conexion.Open();
+
+                int filasAfectadas = this.comando.ExecuteNonQuery();
+
+                if (filasAfectadas == 1)
+                {
+                    retorno = true;
+                }
+            }
+            catch (Exception ex)
+            {
+               
+            }
+            finally
+            {
+                if (this.conexion.State == System.Data.ConnectionState.Open)
+                {
+                    this.conexion.Close();
+                }
+            }
+
+            return retorno;
+        }
+        public bool EliminarDatos(int id, string tabla)
+        {
+            bool retorno = false;
+
+            try
+            {
+                this.comando = new SqlCommand();
+                this.comando.Parameters.AddWithValue("@id", id);
+                this.comando.CommandType = System.Data.CommandType.Text;
+                this.comando.CommandText = $"DELETE FROM {tabla} WHERE id = @id";
+
+                this.comando.Connection = this.conexion;
+
+                this.conexion.Open();
+
+                int filasAfectadas = this.comando.ExecuteNonQuery();
+
+                if (filasAfectadas > 0)
+                {
+                    retorno = true;
+                }
+            }
+            catch (Exception ex)
+            {
+               
             }
             finally
             {
@@ -144,83 +282,4 @@ namespace Clases
         }
     }
 }
-    
-
-
-
-       /* public bool ModificarDatos(Dato d)
-        {
-            bool retorno = false;
-
-            try
-            {
-                this.comando = new SqlCommand();
-                this.comando.Parameters.AddWithValue("@id", d.id);
-                this.comando.Parameters.AddWithValue("@cadena", d.cadena);
-                this.comando.Parameters.AddWithValue("@entero", d.entero);
-                this.comando.Parameters.AddWithValue("@flotante", d.flotante);
-                this.comando.CommandType = System.Data.CommandType.Text;
-                this.comando.CommandText = $"update dato set cadena = @cadena,entero = @entero,flotante=@flotante where id = @id";
-                this.comando.Connection = this.conexion;
-
-                this.conexion.Open();
-
-                int filasAfectadas = this.comando.ExecuteNonQuery();
-
-                if (filasAfectadas == 1)
-                {
-                    retorno = true;
-                }
-
-            }
-            catch (Exception ex)
-            {
-
-            }
-            finally
-            {
-                if (this.conexion.State == System.Data.ConnectionState.Open)
-                {
-                    this.conexion.Close();
-                }
-            }
-
-            return retorno;
-        }
-        public bool EliminarDatos(int id)
-        {
-            bool retorno = false;
-
-            try
-            {
-                this.comando = new SqlCommand();
-                this.comando.Parameters.AddWithValue("@id", id);
-                this.comando.CommandType = System.Data.CommandType.Text;
-                this.comando.CommandText = "DELETE FROM dato WHERE id = @id";
-                this.comando.Connection = this.conexion;
-
-                this.conexion.Open();
-
-                int filasAfectadas = this.comando.ExecuteNonQuery();
-
-                if (filasAfectadas == 1)
-                {
-                    retorno = true;
-                }
-            }
-            catch (Exception ex)
-            {
-                
-            }
-            finally
-            {
-                if (this.conexion.State == System.Data.ConnectionState.Open)
-                {
-                    this.conexion.Close();
-                }
-            }
-
-            return retorno;
-        }
-     }
-}*/
+        

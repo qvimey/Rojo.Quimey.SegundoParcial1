@@ -14,6 +14,7 @@ using System.Text.Json;
 using System.Xml.Serialization;
 using System.Xml;
 using System.Numerics;
+using Clases;
 
 namespace Formularios
 {
@@ -23,6 +24,7 @@ namespace Formularios
         private Garaje<Vehiculo> garaje = new Garaje<Vehiculo>();
         private string fecha;
         private string perfilUsuario = "";
+        AccesoDatos accesoDatos = new AccesoDatos();
 
 
         public FrmCRUD(frmLogin frmLogin, string _nombreUsuario, string perfilUsuario)
@@ -114,8 +116,7 @@ namespace Formularios
             {
                 int index = this.ltsbox.SelectedIndex;
                 Vehiculo vehiculo = garaje.vehiculos[index];
-
-
+               
                 if (vehiculo is Auto)
                 {
                     FrmAuto frmAuto = new FrmAuto((Auto)vehiculo);
@@ -155,7 +156,6 @@ namespace Formularios
 
         private void btnEliminar_Click(object sender, EventArgs e)
         {
-            
             if (this.ltsbox.SelectedIndex != -1)
             {
                 DialogResult resultado = MessageBox.Show("¿Estás seguro de que deseas eliminar este vehículo?",
@@ -164,8 +164,26 @@ namespace Formularios
                 if (resultado == DialogResult.Yes)
                 {
                     int index = this.ltsbox.SelectedIndex;
-                    garaje = garaje - garaje.vehiculos[index];
-                    ActualizarVisor();
+                    if (index >= 0 && index < garaje.vehiculos.Count)
+                    {
+                        Vehiculo vehiculoAEliminar = garaje.vehiculos[index];
+                        bool eliminado = accesoDatos.EliminarDatos(vehiculoAEliminar.Id, vehiculoAEliminar.Tabla);
+
+                        if (eliminado)
+                        { 
+                            garaje = garaje - vehiculoAEliminar;
+                            ActualizarVisor();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Error al eliminar el vehículo");
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Índice de vehículo seleccionado fuera de rango");
+                        MessageBox.Show(index.ToString());
+                    }
                 }
             }
             else
@@ -216,35 +234,19 @@ namespace Formularios
 
         private void BtnCargar_Click_1(object sender, EventArgs e)
         {
-            try
-            {
-                OpenFileDialog archivo = new OpenFileDialog();
-                using (archivo)
-                {
-                    archivo.Filter = "XML Files (*.xml)|*.xml";
+            ElegirTabla elegirTabla = new ElegirTabla();
+            AccesoDatos acceso = new AccesoDatos();
+            DialogResult resultado = elegirTabla.ShowDialog();
 
-                    if (archivo.ShowDialog() == DialogResult.OK)
-                    {
-                        string nombre_archivo = archivo.FileName;
-                        XmlSerializer serialize = new XmlSerializer(typeof(List<Vehiculo>));
-                        try
-                        {
-                            using (XmlTextReader lector = new XmlTextReader(nombre_archivo))
-                            {
-                                garaje.vehiculos = (List<Vehiculo>)serialize.Deserialize(lector);
-                            }
-                            ActualizarVisor();
-                        }
-                        catch (Exception ex)
-                        {
-                            MessageBox.Show($"Error al cargar el archivo: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
+            if (resultado == DialogResult.OK)
             {
-                MessageBox.Show($"Error inesperado: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.ltsbox.Items.Clear();
+                List<Vehiculo> listaVehiculos = acceso.ObtenerListaDatos(elegirTabla.ObtenerDatoElegido());
+
+                foreach (Vehiculo v in listaVehiculos)
+                {
+                    this.ltsbox.Items.Add(v);
+                }
             }
         }
     }

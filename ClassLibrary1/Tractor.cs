@@ -12,7 +12,7 @@ namespace ClassLibrary1
         public int Potencia;
         public int PesoEnKG;
         public string Tamaño;
-
+        public override string Tabla => "Tractores";
         public Tractor()
         {
         }
@@ -60,21 +60,22 @@ namespace ClassLibrary1
 
         public override string ToString()
         {
-            return $"Tractor: {this.Marca} , {this.Modelo}, Año: {this.Año}, Motor: {this.Motor}, " +
+            return $"Id:{this.Id} Tractor: {this.Marca} , {this.Modelo}, Año: {this.Año}, Motor: {this.Motor}, " +
                    $"Caballos de Fuerza: {this.Potencia}, Tamaño: {this.Tamaño}, Peso en KG: {this.PesoEnKG}";
         }
-        public override bool Equals(object? obj)
+        public override bool Equals(object obj)
         {
             if (obj is Tractor otroTractor)
             {
                 return base.Equals(obj) &&
-                       Motor == otroTractor.Motor &&
                        Tamaño == otroTractor.Tamaño &&
                        Potencia == otroTractor.Potencia &&
                        PesoEnKG == otroTractor.PesoEnKG;
             }
+
             return false;
         }
+
         public override void ConfigurarComando(SqlCommand comando)
         {
             base.ConfigurarComando(comando);  

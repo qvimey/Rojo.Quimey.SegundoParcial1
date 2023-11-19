@@ -11,7 +11,7 @@ namespace ClassLibrary1
     {
         public int CapacidadDeCarga;
         public string Tamaño;
-
+        public override string Tabla => "Camiones";
         public Camion()
         {
 
@@ -40,7 +40,7 @@ namespace ClassLibrary1
         }
         public override string ToString()
         {
-            return $"Camion: {this.Marca} , {this.Modelo}, Año: {this.Año}, Motor: {this.Motor}, " +
+            return $"Id:{this.Id} Camion: {this.Marca} , {this.Modelo}, Año: {this.Año}, Motor: {this.Motor}, " +
                    $"Capacidad MAX: {this.CapacidadDeCarga}, Tamaño: {this.Tamaño}";
         }
         public override void ArrancarVehiculo()
@@ -62,15 +62,15 @@ namespace ClassLibrary1
         {
             Console.WriteLine("Motor Iniciado Camion");
         }
-        public override bool Equals(object? obj)
+        public override bool Equals(object obj)
         {
             if (obj is Camion otroCamion)
             {
                 return base.Equals(obj) &&
-                       Motor == otroCamion.Motor &&
                        Tamaño == otroCamion.Tamaño &&
                        CapacidadDeCarga == otroCamion.CapacidadDeCarga;
             }
+
             return false;
         }
         public override void ConfigurarComando(SqlCommand comando)

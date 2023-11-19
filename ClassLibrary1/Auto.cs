@@ -13,6 +13,7 @@ namespace ClassLibrary1
     {
         public int VelocidadPunta;
         public string Color;
+        public override string Tabla => "Autos";
 
         public Auto()
         {
@@ -42,12 +43,23 @@ namespace ClassLibrary1
 
         public override string ToString()
         {
-            return $"Coche: {this.Marca} , {this.Modelo} - Año: {this.Año} - Motor: {this.Motor} - " +
+            return $"Id:{this.Id} Coche: {this.Marca} , {this.Modelo} - Año: {this.Año} - Motor: {this.Motor} - " +
                    $"Velocidad Punta: {this.VelocidadPunta} km/h - Color: {this.Color}";
         }
         protected override void IniciandoMotor()
         {
             Console.WriteLine("Motor Iniciado Auto");
+        }
+        public override bool Equals(object obj)
+        {
+            if (obj is Auto otroAuto)
+            {
+                return base.Equals(obj) &&
+                       VelocidadPunta == otroAuto.VelocidadPunta &&
+                       Color == otroAuto.Color;
+            }
+
+            return false;
         }
 
         public void Acelerar(int velocidadIncremento)
@@ -60,17 +72,7 @@ namespace ClassLibrary1
         {
             Console.WriteLine($"Pintando... Nuevo color: {nuevoColor}");
         }
-        public override bool Equals(object? obj)
-        {
-            if (obj is Auto otroAuto)
-            {
-                return base.Equals(obj) &&
-                       Motor == otroAuto.Motor &&
-                       VelocidadPunta == otroAuto.VelocidadPunta &&
-                       Color == otroAuto.Color;
-            }
-            return false;
-        }
+  
         public override void ConfigurarComando(SqlCommand comando)
         {
             base.ConfigurarComando(comando); 

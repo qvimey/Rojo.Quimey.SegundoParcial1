@@ -81,8 +81,6 @@ namespace Frm
                     MessageBox.Show("La lista de usuarios no está inicializada.");
                 }
 
-                this.Hide();
-
                 if (inicioSesionExitoso)
                 {
                     MessageBox.Show("Inicio de sesión exitoso.");
@@ -98,7 +96,7 @@ namespace Frm
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error: {ex.Message}");
+                MessageBox.Show("Error: " + ex.Message);
             }
         }
 
