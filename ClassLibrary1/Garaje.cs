@@ -81,5 +81,15 @@ namespace ClassLibrary1
         {
             this.vehiculos = this.vehiculos.OrderByDescending(v => v.Motor).ToList();
         }
+        public void AddRange(List<T> listaVehiculos)
+        {
+            foreach (var vehiculo in listaVehiculos)
+            {
+                if (!ContieneVehiculo(vehiculo))
+                {
+                    vehiculos.Add(vehiculo);
+                }
+            }
+        }
     }
 }

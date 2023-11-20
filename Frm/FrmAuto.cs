@@ -67,7 +67,15 @@ namespace Formularios
                 {
                     try
                     {
-                        auto = new Auto(marca, modelo, año, motor, velocidadMax, color, this.Id);
+                        AccesoDatos acceso = new AccesoDatos();
+                        if (acceso.ExisteVehiculoEnBaseDeDatos(this.Id, "Autos"))
+                        {
+                            acceso.ModificarDatos(this.auto);
+                        }
+                        else
+                        {
+                            acceso.InsertarDatos(auto = new Auto(marca, modelo, año, motor, velocidadMax, color, this.Id));
+                        }
                         DialogResult = DialogResult.OK;
                         
                     }

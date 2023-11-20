@@ -25,8 +25,6 @@ namespace Formularios
         private Garaje<Vehiculo> garaje = new Garaje<Vehiculo>();
         private string fecha;
         private string perfilUsuario = "";
-        AccesoDatos accesoDatos = new AccesoDatos();
-
 
         public FrmCRUD(frmLogin frmLogin, string _nombreUsuario, string perfilUsuario)
         {
@@ -53,29 +51,32 @@ namespace Formularios
 
         private void BtnAgregar_Click(object sender, EventArgs e)
         {
-            FrmOpciones frmOpciones = new FrmOpciones();
-            frmOpciones.ShowDialog();
-
-            if (frmOpciones.DialogResult == DialogResult.OK)
+            try
             {
-                if (frmOpciones.eleccion == "Autos")
+                FrmOpciones frmOpciones = new FrmOpciones();
+                frmOpciones.ShowDialog();
+
+                if (frmOpciones.DialogResult == DialogResult.OK)
                 {
-                    garaje += frmOpciones.auto;
-                    accesoDatos.InsertarDatos(frmOpciones.auto);
-                }
-                if (frmOpciones.eleccion == "Tractores")
-                {
-                    garaje += frmOpciones.tractor;
-                    accesoDatos.InsertarDatos(frmOpciones.tractor);
-                }
-                if (frmOpciones.eleccion == "Camiones")
-                {
-                    garaje += frmOpciones.camion;
-                    accesoDatos.InsertarDatos(frmOpciones.camion);
+                    switch (frmOpciones.eleccion)
+                    {
+                        case "Autos":
+                            garaje += frmOpciones.auto;
+                            break;
+                        case "Tractores":
+                            garaje += frmOpciones.tractor;
+                            break;
+                        case "Camiones":
+                            garaje += frmOpciones.camion;
+                            break;
+                    }
+                    ActualizarVisor();
                 }
             }
-            ActualizarVisor();
-            ActualizarListaVehiculos(frmOpciones.eleccion);
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void VerificarPerfil()
@@ -101,7 +102,7 @@ namespace Formularios
         private void FrmCRUD_FormClosing(object sender, FormClosingEventArgs e)
         {
             DialogResult resultado = MessageBox.Show("¿Está seguro de que desea salir?",
-                "Confirmar salida", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            "Confirmar salida", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             if (resultado == DialogResult.No)
             {
@@ -115,155 +116,91 @@ namespace Formularios
 
         private void BtnModificar_Click(object sender, EventArgs e)
         {
-            AccesoDatos acceso = new AccesoDatos();
-            Vehiculo vehiculoSeleccionado = (Vehiculo)this.ltsbox.SelectedItem;
-           
-            if (vehiculoSeleccionado != null)
+
+            try
             {
-                if (vehiculoSeleccionado is Auto)
+                if (this.ltsbox.SelectedIndex != -1)
                 {
-                    FrmAuto frmAuto = new FrmAuto((Auto)vehiculoSeleccionado, vehiculoSeleccionado.Id);
-                    frmAuto.ShowDialog();
+                    int index = this.ltsbox.SelectedIndex;
+                    Vehiculo vehiculo = garaje.vehiculos[index];
 
-                    List<Vehiculo> listaVehiculos = acceso.ObtenerListaDatos("Autos");
-                    int index = listaVehiculos.FindIndex(v => v.Id == vehiculoSeleccionado.Id);
-                    if (index != -1)
+                    if (vehiculo is Auto)
                     {
-                        listaVehiculos[index] = frmAuto.Auto;
-                        if(frmAuto.DialogResult == DialogResult.OK)
+                        FrmAuto frmAuto = new FrmAuto((Auto)vehiculo, index);
+                        frmAuto.ShowDialog();
+                        if (frmAuto.DialogResult == DialogResult.OK)
                         {
-                            acceso.ModificarDatos(frmAuto.Auto);
-                            ActualizarVisor();
-                            ActualizarListaVehiculos("Autos");
+                            garaje.vehiculos[index] = frmAuto.Auto;
                         }
+                        ActualizarVisor();
                     }
-                }
-                if (vehiculoSeleccionado is Tractor)
-                {
-                    FrmTractor frmTractor = new FrmTractor((Tractor)vehiculoSeleccionado, vehiculoSeleccionado.Id);
-                    frmTractor.ShowDialog();
-
-                    List<Vehiculo> listaVehiculos = acceso.ObtenerListaDatos("Tractores");
-                    int index = listaVehiculos.FindIndex(v => v.Id == vehiculoSeleccionado.Id);
-
-                    if (index != -1)
+                    if (vehiculo is Tractor)
                     {
-                        listaVehiculos[index] = frmTractor.Tractor;
+                        FrmTractor frmTractor = new FrmTractor((Tractor)vehiculo, index);
+                        frmTractor.ShowDialog();
                         if (frmTractor.DialogResult == DialogResult.OK)
                         {
-                            acceso.ModificarDatos(frmTractor.Tractor);
-                            ActualizarVisor();
-                            ActualizarListaVehiculos("Tractores");
+                            garaje.vehiculos[index] = frmTractor.Tractor;
                         }
+                        ActualizarVisor();
                     }
-                }
-                if (vehiculoSeleccionado is Camion)
-                {
-                    FrmCamion frmCamion = new FrmCamion((Camion)vehiculoSeleccionado, vehiculoSeleccionado.Id);
-                    frmCamion.ShowDialog();
-
-                    List<Vehiculo> listaVehiculos = acceso.ObtenerListaDatos("Camiones");
-                    int index = listaVehiculos.FindIndex(v => v.Id == vehiculoSeleccionado.Id);
-
-                    if (index != -1)
+                    if (vehiculo is Camion)
                     {
-                        listaVehiculos[index] = frmCamion.Camion;
+                        FrmCamion frmCamion = new FrmCamion((Camion)vehiculo, index);
+                        frmCamion.ShowDialog();
                         if (frmCamion.DialogResult == DialogResult.OK)
                         {
-                            acceso.ModificarDatos(frmCamion.Camion);
-                            ActualizarVisor();
-                            ActualizarListaVehiculos("Camiones");
+                            garaje.vehiculos[index] = frmCamion.Camion;
                         }
+                        ActualizarVisor();
                     }
                 }
+                else
+                {
+                    MessageBox.Show("Por favor seleccione un vehiculo para modificar");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        private void btnEliminar_Click(object sender, EventArgs e)
+        private void BtnEliminar_Click(object sender, EventArgs e)
         {
             if (this.ltsbox.SelectedIndex != -1)
             {
-                try
+                DialogResult resultado = MessageBox.Show("¿Estás seguro de que deseas eliminar este vehículo?",
+                    "Confirmar Eliminación", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (resultado == DialogResult.Yes)
                 {
-                    DialogResult resultado = MessageBox.Show("¿Estás seguro de que deseas eliminar este vehículo?",
-                        "Confirmar Eliminación", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-                    if (resultado == DialogResult.Yes)
-                    {
-                        AccesoDatos acceso = new AccesoDatos();
-                        Vehiculo vehiculoSeleccionado = (Vehiculo)this.ltsbox.SelectedItem;
-                        if (vehiculoSeleccionado is Auto)
-                        {
-                            List<Vehiculo> listaVehiculos = acceso.ObtenerListaDatos("Autos");
-                            int index = listaVehiculos.FindIndex(v => v.Id == vehiculoSeleccionado.Id);
-                            if (index != -1)
-                            {
-                                listaVehiculos[index] = vehiculoSeleccionado;
-            
-                                bool eliminado = accesoDatos.EliminarDatos(vehiculoSeleccionado.Id, "Autos");
-                                ActualizarVisor();
-                                ActualizarListaVehiculos("Autos");
-                                if (eliminado)
-                                {
-                                    MessageBox.Show("Vehiculo Eliminado");
-                                }    
-                            }
-                        }
-                        if (vehiculoSeleccionado is Camion)
-                        {
-                            List<Vehiculo> listaVehiculos = acceso.ObtenerListaDatos("Camiones");
-                            int index = listaVehiculos.FindIndex(v => v.Id == vehiculoSeleccionado.Id);
-                            if (index != -1)
-                            {
-                                listaVehiculos[index] = vehiculoSeleccionado;
-
-                                bool eliminado = accesoDatos.EliminarDatos(vehiculoSeleccionado.Id, "Camiones");
-                                ActualizarVisor();
-                                ActualizarListaVehiculos("Camiones");
-                                if (eliminado)
-                                {
-                                    MessageBox.Show("Camión Eliminado");
-                                }
-                            }
-                        }
-                        if (vehiculoSeleccionado is Tractor)
-                        {
-                            List<Vehiculo> listaVehiculos = acceso.ObtenerListaDatos("Tractores");
-                            int index = listaVehiculos.FindIndex(v => v.Id == vehiculoSeleccionado.Id);
-                            if (index != -1)
-                            {
-                                listaVehiculos[index] = vehiculoSeleccionado;
-
-                                bool eliminado = accesoDatos.EliminarDatos(vehiculoSeleccionado.Id, "Tractores");
-                                ActualizarVisor();
-                                ActualizarListaVehiculos("Tractores");
-                                if (eliminado)
-                                {
-                                    MessageBox.Show("Tractor Eliminado");
-                                }
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    int index = this.ltsbox.SelectedIndex;
+                    garaje.vehiculos.RemoveAt(index);
+                    ActualizarVisor();
                 }
             }
             else
             {
-                MessageBox.Show("Por favor seleccione un vehículo para eliminar", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Por favor seleccione un vehículo para eliminar");
             }
         }
 
         private void BtnOrdenar_Click(object sender, EventArgs e)
         {
-            FrmOrdenamiento ordenar = new FrmOrdenamiento(garaje);
-            DialogResult resultado = ordenar.ShowDialog();
-
-            if (resultado == DialogResult.OK)
+            try
             {
-                ActualizarVisor();
+                FrmOrdenamiento ordenar = new FrmOrdenamiento(garaje);
+                DialogResult result = ordenar.ShowDialog();
+
+                if (result == DialogResult.OK)
+                {
+                    ActualizarVisor();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -298,24 +235,21 @@ namespace Formularios
 
         private void BtnCargar_Click_1(object sender, EventArgs e)
         {
-            ElegirTabla elegirTabla = new ElegirTabla();
-            AccesoDatos acceso = new AccesoDatos();
-            DialogResult resultado = elegirTabla.ShowDialog();
+            try
+            {
+                ElegirTabla elegirTabla = new ElegirTabla();
+                AccesoDatos acceso = new AccesoDatos();
+                DialogResult resultado = elegirTabla.ShowDialog();
 
-            if (resultado == DialogResult.OK)
-            {
-                acceso.ObtenerListaDatos(elegirTabla.ObtenerDatoElegido());
-                ActualizarListaVehiculos(elegirTabla.ObtenerDatoElegido());
+                if (resultado == DialogResult.OK)
+                { 
+                    garaje.AddRange(acceso.ObtenerListaDatos(elegirTabla.ObtenerDatoElegido()));
+                    ActualizarVisor();
+                }
             }
-        }
-        private void ActualizarListaVehiculos(string tabla)
-        {
-            this.ltsbox.Items.Clear();
-            AccesoDatos acceso = new AccesoDatos();
-            List<Vehiculo> listaVehiculos = acceso.ObtenerListaDatos(tabla);
-            foreach (Vehiculo v in listaVehiculos)
+            catch (Exception ex)
             {
-                this.ltsbox.Items.Add(v);
+                MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

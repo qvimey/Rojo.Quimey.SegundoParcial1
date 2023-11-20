@@ -48,7 +48,7 @@ namespace ClassLibrary1
 
         public override string ToString()
         {
-            return $"Id:{this.Id} Coche: {this.Marca} , {this.Modelo} - Año: {this.Año} - Motor: {this.Motor} - " +
+            return $"Coche: {this.Marca} , {this.Modelo} - Año: {this.Año} - Motor: {this.Motor} - " +
                    $"Velocidad Punta: {this.VelocidadPunta} km/h - Color: {this.Color}";
         }
         protected override void IniciandoMotor()

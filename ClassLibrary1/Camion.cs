@@ -45,7 +45,7 @@ namespace ClassLibrary1
         }
         public override string ToString()
         {
-            return $"Id:{this.Id} Camion: {this.Marca} , {this.Modelo}, Año: {this.Año}, Motor: {this.Motor}, " +
+            return $"Camion: {this.Marca} , {this.Modelo}, Año: {this.Año}, Motor: {this.Motor}, " +
                    $"Capacidad MAX: {this.CapacidadDeCarga}, Tamaño: {this.Tamaño}";
         }
         public override void ArrancarVehiculo()

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Data.SqlClient;
 using ClassLibrary1;
 using System.Data;
+using System.Collections;
 
 namespace Clases
 {
@@ -46,15 +47,15 @@ namespace Clases
             }
             return retorno;
         }
-
+     
         public List<Vehiculo> ObtenerListaDatos(string Tabla)
         {
-            List<Vehiculo> lista = new List<Vehiculo>();
+            Garaje<Vehiculo> lista = new Garaje<Vehiculo>();
 
             try
             {
                 this.comando = new SqlCommand();
-                this.comando.CommandType = System.Data.CommandType.Text;
+                this.comando.CommandType = CommandType.Text;
                 if (Tabla == "Autos")
                 {
                     this.comando.CommandText = $"SELECT Id, Marca, Modelo, Año, Motor, VelocidadPunta, Color FROM Autos ";
@@ -86,14 +87,14 @@ namespace Clases
                         int velocidadPunta = (int)lector["VelocidadPunta"];
                         string color = lector["Color"].ToString();
 
-                        lista.Add(new Auto(marca, modelo, año, motor, velocidadPunta, color,id));
+                        lista += new Auto(marca, modelo, año, motor, velocidadPunta, color, id);
                     }
                     if (Tabla == "Camiones")
                     {
                         string tamaño = lector["Tamaño"].ToString();
                         int capacidadCarga = (int)lector["CapacidadDeCarga"];
 
-                        lista.Add(new Camion(marca, modelo, año, motor, tamaño, capacidadCarga,id));
+                        lista += (new Camion(marca, modelo, año, motor, tamaño, capacidadCarga,id));
                     }
                     if (Tabla == "Tractores")
                     {
@@ -101,7 +102,7 @@ namespace Clases
                         int potencia = (int)lector["Potencia"];
                         int pesoEnKG = (int)lector["PesoEnKG"];
 
-                        lista.Add(new Tractor(marca, modelo, año, motor, tamaño, potencia, pesoEnKG,id));
+                        lista += (new Tractor(marca, modelo, año, motor, tamaño, potencia, pesoEnKG,id));
                     }
                 }
             }
@@ -111,15 +112,15 @@ namespace Clases
             }
             finally
             {
-                if (this.conexion.State == System.Data.ConnectionState.Open)
+                if (this.conexion.State == ConnectionState.Open)
                 {
                     this.conexion.Close();
                 }
             }
 
-            return lista;
+            return lista.vehiculos;
         }
-
+        
         public bool InsertarDatos(Vehiculo vehiculo)
         {
             bool retorno = false;
